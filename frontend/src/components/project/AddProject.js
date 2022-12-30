@@ -1,6 +1,12 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { createProject } from "../../actions/projectsActions";
 
 const AddProject = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [projectName, setProjectName] = useState("");
   const [projectIdentifier, setProjectIdentifier] = useState("");
   const [description, setDescription] = useState("");
@@ -16,6 +22,8 @@ const AddProject = () => {
       start_date,
       end_date,
     };
+    dispatch(createProject(newProject));
+    navigate("/");
   };
 
   return (
