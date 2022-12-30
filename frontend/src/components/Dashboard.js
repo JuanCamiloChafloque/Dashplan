@@ -1,10 +1,25 @@
 import React from "react";
+import CreateProjectButton from "./project/CreateProjectButton";
+import ProjectItem from "./project/ProjectItem";
 
 const Dashboard = () => {
   return (
-    <div>
-      <h1 className="alert alert-warning">Welcome to the dashboard</h1>
-    </div>
+    <>
+      <div className="projects">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12">
+              <h1 className="display-4 text-center">Projects</h1>
+              <br />
+              <CreateProjectButton />
+              <br />
+              <hr />
+              <ProjectItem />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
