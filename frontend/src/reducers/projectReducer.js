@@ -1,4 +1,4 @@
-import { GET_PROJECTS } from "../actions/types";
+import { GET_PROJECTS, GET_PROJECT } from "../actions/types";
 
 export const projectReducer = (
   state = { projects: [], project: {} },
@@ -9,6 +9,13 @@ export const projectReducer = (
       return {
         ...state,
         projects: action.payload,
+      };
+    }
+
+    case GET_PROJECT: {
+      return {
+        ...state,
+        project: action.payload,
       };
     }
 

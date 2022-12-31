@@ -1,31 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import classnames from "classnames";
-import { createProject } from "../../actions/projectsActions";
+import { getProjectById, createProject } from "../../actions/projectsActions";
 
-const AddProject = () => {
+const UpdateProject = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const { project } = useSelector((state) => state.project);
   const error = useSelector((state) => state.errors);
 
+  const [projectId, setProjectId] = useState("");
   const [projectName, setProjectName] = useState("");
   const [projectIdentifier, setProjectIdentifier] = useState("");
   const [description, setDescription] = useState("");
   const [start_date, setStartDate] = useState("");
   const [end_date, setEndDate] = useState("");
 
+  useEffect(() => {
+    dispatch(getProjectById(id));
+    if (project) {
+      setProjectId(project.id);
+      setProjectName(project.projectName);
+      setProjectIdentifier(project.projectIdentifier);
+      setDescription(project.description);
+      setStartDate(project.start_date);
+      setEndDate(project.end_date);
+    }
+  }, [dispatch, id]);
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    const newProject = {
+    const updatedProject = {
+      id: projectId,
       projectName,
       projectIdentifier,
       description,
       start_date,
       end_date,
     };
-    dispatch(createProject(newProject, navigate));
+    dispatch(createProject(updatedProject, navigate));
   };
 
   return (
@@ -34,7 +49,7 @@ const AddProject = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h5 className="display-4 text-center">Create Project form</h5>
+              <h5 className="display-4 text-center">Update Project form</h5>
               <hr />
               <form onSubmit={onSubmitHandler}>
                 <div className="form-group">
@@ -55,24 +70,17 @@ const AddProject = () => {
                 <div className="form-group">
                   <input
                     type="text"
-                    className={classnames("form-control form-control-lg", {
-                      "is-invalid": error.projectIdentifier,
-                    })}
+                    className="form-control form-control-lg"
                     placeholder="Unique Project ID"
                     name="projectIdentifier"
                     value={projectIdentifier}
-                    onChange={(e) => setProjectIdentifier(e.target.value)}
+                    disabled
                   />
-                  {error.projectIdentifier && (
-                    <p className="invalid-feedback">
-                      {error.projectIdentifier}
-                    </p>
-                  )}
                 </div>
                 <div className="form-group">
                   <textarea
                     className={classnames("form-control form-control-lg", {
-                      "is-invalid": error.description,
+                      "is-invalid": error.projectName,
                     })}
                     placeholder="Project Description"
                     name="description"
@@ -117,4 +125,4 @@ const AddProject = () => {
   );
 };
 
-export default AddProject;
+export default UpdateProject;
