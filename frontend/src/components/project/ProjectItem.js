@@ -1,7 +1,15 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { deleteProjectById } from "../../actions/projectsActions";
 
 const ProjectItem = ({ project }) => {
+  const dispatch = useDispatch();
+
+  const onDeleteHandler = (id) => {
+    dispatch(deleteProjectById(id));
+  };
+
   return (
     <>
       <div className="container">
@@ -26,11 +34,12 @@ const ProjectItem = ({ project }) => {
                     <i className="fa fa-edit pr-1"> Update Project Info</i>
                   </li>
                 </Link>
-                <a href="/">
-                  <li className="list-group-item delete">
-                    <i className="fa fa-minus-circle pr-1"> Delete Project</i>
-                  </li>
-                </a>
+                <li
+                  className="list-group-item delete"
+                  onClick={() => onDeleteHandler(project.projectIdentifier)}
+                >
+                  <i className="fa fa-minus-circle pr-1"> Delete Project</i>
+                </li>
               </ul>
             </div>
           </div>
