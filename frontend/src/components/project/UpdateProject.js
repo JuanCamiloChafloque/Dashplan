@@ -20,6 +20,9 @@ const UpdateProject = () => {
 
   useEffect(() => {
     dispatch(getProjectById(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
     if (project) {
       setProjectId(project.id);
       setProjectName(project.projectName);
@@ -28,7 +31,7 @@ const UpdateProject = () => {
       setStartDate(project.start_date);
       setEndDate(project.end_date);
     }
-  }, [dispatch, id]);
+  }, [project]);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
