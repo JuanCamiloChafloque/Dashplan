@@ -5,6 +5,10 @@ export const createProject = (project, navigate) => async (dispatch) => {
   try {
     await axios.post("/api/project", project);
     navigate("/");
+    dispatch({
+      type: GET_ERRORS,
+      payload: {},
+    });
   } catch (err) {
     dispatch({
       type: GET_ERRORS,
@@ -28,7 +32,7 @@ export const getProjects = () => async (dispatch) => {
   }
 };
 
-export const getProjectById = (id) => async (dispatch) => {
+export const getProjectById = (id, navigate) => async (dispatch) => {
   try {
     const res = await axios.get("/api/project/" + id);
     dispatch({
@@ -36,9 +40,6 @@ export const getProjectById = (id) => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
-    dispatch({
-      type: GET_ERRORS,
-      payload: err.response.data,
-    });
+    navigate("/");
   }
 };

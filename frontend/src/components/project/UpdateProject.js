@@ -19,8 +19,8 @@ const UpdateProject = () => {
   const [end_date, setEndDate] = useState("");
 
   useEffect(() => {
-    dispatch(getProjectById(id));
-  }, [dispatch, id]);
+    dispatch(getProjectById(id, navigate));
+  }, [dispatch, navigate, id]);
 
   useEffect(() => {
     if (project) {
@@ -83,7 +83,7 @@ const UpdateProject = () => {
                 <div className="form-group">
                   <textarea
                     className={classnames("form-control form-control-lg", {
-                      "is-invalid": error.projectName,
+                      "is-invalid": error.description,
                     })}
                     placeholder="Project Description"
                     name="description"
