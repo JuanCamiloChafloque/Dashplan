@@ -23,7 +23,10 @@ const Dashboard = () => {
               <CreateProjectButton />
               <br />
               <hr />
-              <ProjectItem />
+              {projects &&
+                projects.map((project, idx) => (
+                  <ProjectItem key={idx} project={project} />
+                ))}
             </div>
           </div>
         </div>

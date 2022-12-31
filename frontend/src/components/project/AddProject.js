@@ -25,10 +25,7 @@ const AddProject = () => {
       start_date,
       end_date,
     };
-    dispatch(createProject(newProject));
-    if (!error) {
-      navigate("/");
-    }
+    dispatch(createProject(newProject, navigate));
   };
 
   return (

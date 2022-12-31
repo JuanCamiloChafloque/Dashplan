@@ -1,9 +1,10 @@
 import axios from "axios";
 import { GET_ERRORS, GET_PROJECTS } from "./types";
 
-export const createProject = (project) => async (dispatch) => {
+export const createProject = (project, navigate) => async (dispatch) => {
   try {
     await axios.post("/api/project", project);
+    navigate("/");
   } catch (err) {
     dispatch({
       type: GET_ERRORS,
