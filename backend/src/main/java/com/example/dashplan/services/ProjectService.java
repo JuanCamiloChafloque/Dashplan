@@ -3,27 +3,43 @@ package com.example.dashplan.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.dashplan.domain.Backlog;
 import com.example.dashplan.domain.Project;
 import com.example.dashplan.exceptions.ProjectIdException;
+import com.example.dashplan.repositories.BacklogRepository;
 import com.example.dashplan.repositories.ProjectRepository;
 
 @Service
 public class ProjectService {
     
     @Autowired
-    private ProjectRepository repository;
+    private ProjectRepository projectRepository;
+
+    @Autowired
+    private BacklogRepository backlogRepository;
 
     public Project saveOrUpdateProject(Project project) {
         try {
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
-            return repository.save(project);
+            if(project.getId() == null) {
+                Backlog backlog = new Backlog();
+                project.setBacklog(backlog);
+                backlog.setProject(project);
+                backlog.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            }
+
+            if(project.getId() != null) {
+                project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase()));
+            }
+
+            return projectRepository.save(project);
         }catch(Exception e) {
             throw new ProjectIdException("Project ID '" + project.getProjectIdentifier().toUpperCase() + "' already exists");
         }
     }
 
     public Project findProjectByIdentifier(String projectId) {
-        Project project = repository.findByProjectIdentifier(projectId.toUpperCase());
+        Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
         if(project == null) {
             throw new ProjectIdException("Project ID '" + projectId + "' does not exist");
         }
@@ -31,14 +47,14 @@ public class ProjectService {
     }
 
     public Iterable<Project> findAllProjects() {
-        return repository.findAll();
+        return projectRepository.findAll();
     }
 
     public void deleteProjectByIdentifier(String projectId) {
-        Project project = repository.findByProjectIdentifier(projectId.toUpperCase());
+        Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
         if(project == null) {
             throw new ProjectIdException("Project ID '" + projectId + "' cannot be deleted. Project does not exist");
         }
-        repository.delete(project);
+        projectRepository.delete(project);
     }
 }
