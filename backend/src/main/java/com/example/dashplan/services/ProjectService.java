@@ -34,14 +34,14 @@ public class ProjectService {
 
             return projectRepository.save(project);
         }catch(Exception e) {
-            throw new ProjectIdException("Project ID '" + project.getProjectIdentifier().toUpperCase() + "' already exists");
+            throw new ProjectIdException("Project '" + project.getProjectIdentifier().toUpperCase() + "' already exists");
         }
     }
 
     public Project findProjectByIdentifier(String projectId) {
         Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
         if(project == null) {
-            throw new ProjectIdException("Project ID '" + projectId + "' does not exist");
+            throw new ProjectIdException("Project '" + projectId + "' does not exist");
         }
         return project;
     }
@@ -53,7 +53,7 @@ public class ProjectService {
     public void deleteProjectByIdentifier(String projectId) {
         Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
         if(project == null) {
-            throw new ProjectIdException("Project ID '" + projectId + "' cannot be deleted. Project does not exist");
+            throw new ProjectIdException("Project '" + projectId + "' cannot be deleted. Project does not exist");
         }
         projectRepository.delete(project);
     }
