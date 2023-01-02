@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
+import ProjectBoard from "./components/board/ProjectBoard";
+import AddProjectTask from "./components/board/tasks/AddProjectTask";
 import Dashboard from "./components/Dashboard";
 import Header from "./components/layout/Header";
 import AddProject from "./components/project/AddProject";
@@ -13,6 +15,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/update/:id" element={<UpdateProject />} />
+          <Route path="/board/:id" element={<ProjectBoard />} />
+          <Route path="/add/:id" element={<AddProjectTask />} />
           <Route path="/addProject" element={<AddProject />} />
         </Routes>
       </BrowserRouter>
