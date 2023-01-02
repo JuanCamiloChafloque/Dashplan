@@ -1,6 +1,11 @@
 import React from "react";
+import ProjectTask from "./tasks/ProjectTask";
 
-const Backlog = ({ id, tasks }) => {
+const Backlog = ({ tasks }) => {
+  const todoTasks = tasks.filter((task) => task.status === "TO_DO");
+  const progressTasks = tasks.filter((task) => task.status === "IN_PROGRESS");
+  const doneTasks = tasks.filter((task) => task.status === "DONE");
+
   return (
     <>
       <div className="container">
@@ -11,6 +16,9 @@ const Backlog = ({ id, tasks }) => {
                 <h3>TO DO</h3>
               </div>
             </div>
+            {todoTasks.map((task) => (
+              <ProjectTask key={task.id} task={task} />
+            ))}
           </div>
           <div className="col-md-4">
             <div className="card text-center mb-2">
@@ -18,6 +26,9 @@ const Backlog = ({ id, tasks }) => {
                 <h3>In Progress</h3>
               </div>
             </div>
+            {progressTasks.map((task) => (
+              <ProjectTask key={task.id} task={task} />
+            ))}
           </div>
           <div className="col-md-4">
             <div className="card text-center mb-2">
@@ -25,6 +36,9 @@ const Backlog = ({ id, tasks }) => {
                 <h3>Done</h3>
               </div>
             </div>
+            {doneTasks.map((task) => (
+              <ProjectTask key={task.id} task={task} />
+            ))}
           </div>
         </div>
       </div>

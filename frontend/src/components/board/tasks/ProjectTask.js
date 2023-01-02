@@ -1,17 +1,38 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const ProjectTask = ({ id, task }) => {
+const ProjectTask = ({ task }) => {
+  let priorityString;
+  let priorityClass;
+
+  if (task.priority === 1) {
+    priorityClass = "bg-danger text-light";
+    priorityString = "HIGH";
+  }
+
+  if (task.priority === 2) {
+    priorityClass = "bg-warning text-light";
+    priorityString = "MEDIUM";
+  }
+
+  if (task.priority === 3) {
+    priorityClass = "bg-info text-light";
+    priorityString = "LOW";
+  }
+
   return (
     <>
       <div className="card mb-1 bg-light">
-        <div className="card-header text-primary">
-          ID: {task.projectIdentifier} -- Priority: {task.priority}
+        <div className={"card-header text-primary " + priorityClass}>
+          ID: {task.projectIdentifier} -- Priority: {priorityString}
         </div>
         <div className="card-body bg-light">
           <h5 className="card-title">{task.summary}</h5>
           <p className="card-text text-truncate ">{task.acceptanceCriteria}</p>
-          <Link to={"/task/" + id} className="btn btn-primary">
+          <Link
+            to={"/task/" + task.projectIdentifier + "/" + task.projectSequence}
+            className="btn btn-primary"
+          >
             View / Update
           </Link>
 

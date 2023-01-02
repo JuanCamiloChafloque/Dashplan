@@ -21,7 +21,7 @@ const ProjectBoard = () => {
         </Link>
         <br />
         <hr />
-        <Backlog id={id} tasks={projectTasks} />
+        <Backlog tasks={projectTasks} />
       </div>
     </>
   );
