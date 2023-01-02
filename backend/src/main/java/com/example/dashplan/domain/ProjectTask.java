@@ -2,6 +2,7 @@ package com.example.dashplan.domain;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -35,6 +36,8 @@ public class ProjectTask {
     private String acceptanceCriteria;
     private String status;
     private Integer priority;
+
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date dueDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
