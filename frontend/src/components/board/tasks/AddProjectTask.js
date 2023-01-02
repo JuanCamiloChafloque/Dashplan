@@ -1,11 +1,33 @@
-import React from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import classnames from "classnames";
+import { addProjectTask } from "../../../actions/backlogActions";
 
 const AddProjectTask = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { id } = useParams();
+
+  const error = useSelector((state) => state.errors);
+
+  const [summary, setSummary] = useState("");
+  const [acceptanceCriteria, setAcceptanceCriteria] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [priority, setPriority] = useState(0);
+  const [status, setStatus] = useState("");
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    const newProjectTask = {
+      projectIdentifier: id,
+      summary,
+      acceptanceCriteria,
+      dueDate,
+      priority,
+      status,
+    };
+    dispatch(addProjectTask(id, newProjectTask, navigate));
   };
 
   return (
@@ -23,16 +45,25 @@ const AddProjectTask = () => {
                 <div className="form-group">
                   <input
                     type="text"
-                    className="form-control form-control-lg"
-                    name="summary"
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": error.summary,
+                    })}
                     placeholder="Project Task summary"
+                    name="summary"
+                    value={summary}
+                    onChange={(e) => setSummary(e.target.value)}
                   />
+                  {error.summary && (
+                    <p className="invalid-feedback">{error.summary}</p>
+                  )}
                 </div>
                 <div className="form-group">
                   <textarea
                     className="form-control form-control-lg"
                     placeholder="Acceptance Criteria"
                     name="acceptanceCriteria"
+                    value={acceptanceCriteria}
+                    onChange={(e) => setAcceptanceCriteria(e.target.value)}
                   ></textarea>
                 </div>
                 <h6>Due Date</h6>
@@ -41,12 +72,16 @@ const AddProjectTask = () => {
                     type="date"
                     className="form-control form-control-lg"
                     name="dueDate"
+                    value={dueDate}
+                    onChange={(e) => setDueDate(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
                   <select
                     className="form-control form-control-lg"
                     name="priority"
+                    value={priority}
+                    onChange={(e) => setPriority(e.target.value)}
                   >
                     <option value={0}>Select Priority</option>
                     <option value={1}>High</option>
@@ -59,6 +94,8 @@ const AddProjectTask = () => {
                   <select
                     className="form-control form-control-lg"
                     name="status"
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
                   >
                     <option value="">Select Status</option>
                     <option value="TO_DO">TO DO</option>

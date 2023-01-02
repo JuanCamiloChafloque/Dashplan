@@ -32,7 +32,7 @@ public class BacklogController {
     private ValidationErrorService errorService;
 
     @PostMapping("/{backlog_id}")
-    public ResponseEntity<?> addPTtoBacklog(@Valid @RequestBody ProjectTask projectTask, @PathVariable String backlog_id, BindingResult result) {
+    public ResponseEntity<?> addPTtoBacklog(@Valid @RequestBody ProjectTask projectTask, BindingResult result, @PathVariable String backlog_id) {
         ResponseEntity<?> errorMap = errorService.mapValidationService(result);
         if(errorMap != null) {
             return errorMap;
