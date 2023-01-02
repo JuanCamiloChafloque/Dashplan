@@ -26,7 +26,7 @@ public class WebSecurityConfig {
         .and()
         .headers().frameOptions().sameOrigin() //Enable H2 database console
         .and()
-        .authorizeHttpRequests().requestMatchers("/").permitAll()
+        .authorizeHttpRequests().requestMatchers("/", "/api/users/**").permitAll()
         .anyRequest().authenticated();
 
         return http.build();
