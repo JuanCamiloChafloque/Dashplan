@@ -7,11 +7,32 @@ import Backlog from "./Backlog";
 const ProjectBoard = () => {
   const dispatch = useDispatch();
   const { projectTasks } = useSelector((state) => state.backlog);
+  const error = useSelector((state) => state.errors);
   const { id } = useParams();
 
   useEffect(() => {
     dispatch(getBacklog(id));
   }, [dispatch, id]);
+
+  const Board = () => {
+    if (projectTasks.length < 1) {
+      if (error.projectNotFound) {
+        return (
+          <div className="alert alert-danger text-center" role="alert">
+            {error.projectNotFound}
+          </div>
+        );
+      } else {
+        return (
+          <div className="alert alert-info text-center" role="alert">
+            No project tasks on this board
+          </div>
+        );
+      }
+    } else {
+      return <Backlog tasks={projectTasks} />;
+    }
+  };
 
   return (
     <>
@@ -21,7 +42,7 @@ const ProjectBoard = () => {
         </Link>
         <br />
         <hr />
-        <Backlog tasks={projectTasks} />
+        <Board />
       </div>
     </>
   );
