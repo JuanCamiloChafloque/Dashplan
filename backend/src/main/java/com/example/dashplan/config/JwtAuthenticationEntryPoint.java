@@ -7,7 +7,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.example.dashplan.exceptions.InvalidLoginResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,8 +20,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             AuthenticationException authException) throws IOException, ServletException {
 
                 InvalidLoginResponse loginResponse = new InvalidLoginResponse();
-                ObjectMapper mapper = new ObjectMapper();
-                String jsonLoginResponse = mapper.writeValueAsString(loginResponse);
+                String jsonLoginResponse = "{\n\"username\": \"" + loginResponse.getUsername() + "\",\n\"password\": \"" + loginResponse.getPassword() + "\"}";
 
                 response.setContentType("application/json");
                 response.setStatus(401);
