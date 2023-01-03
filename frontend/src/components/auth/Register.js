@@ -52,12 +52,12 @@ const Register = () => {
                 </div>
                 <div className="form-group">
                   <input
-                    type="email"
+                    type="text"
                     className={classnames("form-control form-control-lg", {
                       "is-invalid": error.username,
                     })}
                     placeholder="Email Address"
-                    name="email"
+                    name="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                   />
