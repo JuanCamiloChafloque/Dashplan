@@ -4,7 +4,7 @@ import { GET_ERRORS, GET_PROJECTS, GET_PROJECT, DELETE_PROJECT } from "./types";
 export const createProject = (project, navigate) => async (dispatch) => {
   try {
     await axios.post("/api/project", project);
-    navigate("/");
+    navigate("/dashboard");
     dispatch({
       type: GET_ERRORS,
       payload: {},
@@ -40,7 +40,7 @@ export const getProjectById = (id, navigate) => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
-    navigate("/");
+    navigate("/dashboard");
   }
 };
 

@@ -47,7 +47,7 @@ export const getPTbyBacklogId =
         payload: res.data,
       });
     } catch (err) {
-      navigate("/");
+      navigate("/dashboard");
     }
   };
 
