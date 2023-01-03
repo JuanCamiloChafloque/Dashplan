@@ -50,24 +50,24 @@ public class BacklogController {
     }
 
     @GetMapping("/{backlog_id}/{pt_id}")
-    public ResponseEntity<?> getProjectTask(@PathVariable String backlog_id, @PathVariable String pt_id) {
-        ProjectTask projectTask = projectTaskService.findPTbyProjectSequence(backlog_id, pt_id);
+    public ResponseEntity<?> getProjectTask(@PathVariable String backlog_id, @PathVariable String pt_id, Principal principal) {
+        ProjectTask projectTask = projectTaskService.findPTbyProjectSequence(backlog_id, pt_id, principal.getName());
         return new ResponseEntity<ProjectTask>(projectTask, HttpStatus.OK);
     }
 
     @PatchMapping("/{backlog_id}/{pt_id}")
-    public ResponseEntity<?> updateProjectTask(@Valid @RequestBody ProjectTask projectTask, BindingResult result, @PathVariable String backlog_id, @PathVariable String pt_id) {
+    public ResponseEntity<?> updateProjectTask(@Valid @RequestBody ProjectTask projectTask, BindingResult result, @PathVariable String backlog_id, @PathVariable String pt_id, Principal principal) {
         ResponseEntity<?> errorMap = errorService.mapValidationService(result);
         if(errorMap != null) {
             return errorMap;
         }
-        ProjectTask updatedTask = projectTaskService.updatePTbyProjectSequence(projectTask, backlog_id, pt_id);
+        ProjectTask updatedTask = projectTaskService.updatePTbyProjectSequence(projectTask, backlog_id, pt_id, principal.getName());
         return new ResponseEntity<ProjectTask>(updatedTask, HttpStatus.OK);
     }
 
     @DeleteMapping("/{backlog_id}/{pt_id}")
-    public ResponseEntity<?> deleteProjectTask(@PathVariable String backlog_id, @PathVariable String pt_id) {
-        projectTaskService.deletePTbyProjectSequence(backlog_id, pt_id);
+    public ResponseEntity<?> deleteProjectTask(@PathVariable String backlog_id, @PathVariable String pt_id, Principal principal) {
+        projectTaskService.deletePTbyProjectSequence(backlog_id, pt_id, principal.getName());
         return new ResponseEntity<String>("Project task '" + pt_id + "' was deleted successfully", HttpStatus.OK);
     }
 }

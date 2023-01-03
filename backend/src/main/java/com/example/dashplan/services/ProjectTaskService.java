@@ -4,24 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dashplan.domain.Backlog;
-import com.example.dashplan.domain.Project;
 import com.example.dashplan.domain.ProjectTask;
 import com.example.dashplan.exceptions.ProjectNotFoundException;
-import com.example.dashplan.repositories.BacklogRepository;
-import com.example.dashplan.repositories.ProjectRepository;
 import com.example.dashplan.repositories.ProjectTaskRepository;
 
 @Service
 public class ProjectTaskService {
-    
-    @Autowired
-    private BacklogRepository backlogRepository;
 
     @Autowired 
     private ProjectTaskRepository projectTaskRepository;
-
-    @Autowired
-    private ProjectRepository projectRepository;
 
     @Autowired
     private ProjectService projectService;
@@ -49,19 +40,13 @@ public class ProjectTaskService {
     }
 
     public Iterable<ProjectTask> findBacklogById(String id, String username) {
-        Project project = projectRepository.findByProjectIdentifier(id);
-        if(project == null) {
-            throw new ProjectNotFoundException("Project: " + id + " does not exist");
-        }
         projectService.findProjectByIdentifier(id, username);
         return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
     }
 
-    public ProjectTask findPTbyProjectSequence(String backlog_id, String pt_id) {
-        Backlog backlog = backlogRepository.findByProjectIdentifier(backlog_id);
-        if(backlog == null) {
-            throw new ProjectNotFoundException("Project '" + backlog_id + "'' does not exist");
-        }
+    public ProjectTask findPTbyProjectSequence(String backlog_id, String pt_id, String username) {
+
+        projectService.findProjectByIdentifier(backlog_id, username);
 
         ProjectTask projectTask = projectTaskRepository.findByProjectSequence(pt_id);
         if(projectTask == null) {
@@ -75,14 +60,14 @@ public class ProjectTaskService {
         return projectTask;
     }
 
-    public ProjectTask updatePTbyProjectSequence(ProjectTask updatedTask, String backlog_id, String pt_id) {
-        ProjectTask projectTask = findPTbyProjectSequence(backlog_id, pt_id);
+    public ProjectTask updatePTbyProjectSequence(ProjectTask updatedTask, String backlog_id, String pt_id, String username) {
+        ProjectTask projectTask = findPTbyProjectSequence(backlog_id, pt_id, username);
         projectTask = updatedTask;
         return projectTaskRepository.save(projectTask);
     }
 
-    public void deletePTbyProjectSequence(String backlog_id, String pt_id) {
-        ProjectTask projectTask = findPTbyProjectSequence(backlog_id, pt_id);
+    public void deletePTbyProjectSequence(String backlog_id, String pt_id, String username) {
+        ProjectTask projectTask = findPTbyProjectSequence(backlog_id, pt_id, username);
         projectTaskRepository.delete(projectTask);
     }
 }
