@@ -1,5 +1,7 @@
 package com.example.dashplan.web;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +34,11 @@ public class ProjectController {
 
 
     @PostMapping("")
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result, Principal principal) {
         ResponseEntity<?> errorMap = errorService.mapValidationService(result);
         if(errorMap != null) return errorMap;
 
-        Project newProject = projectService.saveOrUpdateProject(project);
+        Project newProject = projectService.saveOrUpdateProject(project, principal.getName());
         return new ResponseEntity<Project>(newProject, HttpStatus.CREATED);
     }
 
