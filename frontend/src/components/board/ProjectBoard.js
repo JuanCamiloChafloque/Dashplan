@@ -22,6 +22,12 @@ const ProjectBoard = () => {
             {error.projectNotFound}
           </div>
         );
+      } else if (error.projectIdentifier) {
+        return (
+          <div className="alert alert-danger text-center" role="alert">
+            {error.projectIdentifier}
+          </div>
+        );
       } else {
         return (
           <div className="alert alert-info text-center" role="alert">
