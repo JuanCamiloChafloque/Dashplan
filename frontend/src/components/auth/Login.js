@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import classnames from "classnames";
@@ -13,6 +13,12 @@ const Login = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (valid) {
+      navigate("/dashboard");
+    }
+  }, [valid, navigate]);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();

@@ -1,7 +1,17 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Landing = () => {
+  const navigate = useNavigate();
+  const { valid } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (valid) {
+      navigate("/dashboard");
+    }
+  }, [valid, navigate]);
+
   return (
     <>
       <div className="landing">

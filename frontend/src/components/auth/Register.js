@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import classnames from "classnames";
@@ -9,11 +9,18 @@ const Register = () => {
   const dispatch = useDispatch();
 
   const error = useSelector((state) => state.errors);
+  const { valid } = useSelector((state) => state.auth);
 
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  useEffect(() => {
+    if (valid) {
+      navigate("/dashboard");
+    }
+  }, [valid, navigate]);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
