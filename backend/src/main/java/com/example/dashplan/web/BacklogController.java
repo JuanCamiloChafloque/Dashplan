@@ -1,5 +1,7 @@
 package com.example.dashplan.web;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,19 +34,19 @@ public class BacklogController {
     private ValidationErrorService errorService;
 
     @PostMapping("/{backlog_id}")
-    public ResponseEntity<?> addPTtoBacklog(@Valid @RequestBody ProjectTask projectTask, BindingResult result, @PathVariable String backlog_id) {
+    public ResponseEntity<?> addPTtoBacklog(@Valid @RequestBody ProjectTask projectTask, BindingResult result, @PathVariable String backlog_id, Principal principal) {
         ResponseEntity<?> errorMap = errorService.mapValidationService(result);
         if(errorMap != null) {
             return errorMap;
         }
 
-        ProjectTask newProjectTask = projectTaskService.addProjectTask(backlog_id, projectTask);
+        ProjectTask newProjectTask = projectTaskService.addProjectTask(backlog_id, projectTask, principal.getName());
         return new ResponseEntity<ProjectTask>(newProjectTask, HttpStatus.CREATED);
     }
 
     @GetMapping("/{backlog_id}")
-    public Iterable<ProjectTask> getProjectBacklog(@PathVariable String backlog_id) {
-        return projectTaskService.findBacklogById(backlog_id);
+    public Iterable<ProjectTask> getProjectBacklog(@PathVariable String backlog_id, Principal principal) {
+        return projectTaskService.findBacklogById(backlog_id, principal.getName());
     }
 
     @GetMapping("/{backlog_id}/{pt_id}")
