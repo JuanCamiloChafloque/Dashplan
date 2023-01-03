@@ -1,4 +1,6 @@
 import axios from "axios";
+import { setJWTToken } from "../utils/JWTToken";
+import jwt_decode from "jwt-decode";
 import { GET_ERRORS, SET_CURRENT_USER } from "./types";
 
 export const createNewUser = (newUser, navigate) => async (dispatch) => {
@@ -8,6 +10,25 @@ export const createNewUser = (newUser, navigate) => async (dispatch) => {
     dispatch({
       type: GET_ERRORS,
       payload: {},
+    });
+  } catch (err) {
+    dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data,
+    });
+  }
+};
+
+export const login = (loginRequest, navigate) => async (dispatch) => {
+  try {
+    const res = await axios.post("/api/users/login", loginRequest);
+    const { token } = res.data;
+    localStorage.setItem("jwtToken", token);
+    setJWTToken(token);
+    const decoded = jwt_decode(token);
+    dispatch({
+      type: SET_CURRENT_USER,
+      payload: decoded,
     });
   } catch (err) {
     dispatch({
